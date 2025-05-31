@@ -59,100 +59,87 @@
 </head>
 <body>
 
-  <button id="startBtn">Tap here to know how much I love you</button>
-
-  <div class="center-message" id="pesan"></div>
-
-  <img id="imageSurprise" src="salwa1.jpg" alt="Untuk Salwa">
-  <img id="imageSurprise" src="salwa2.jpg" alt="Untuk Salwa">
-  <img id="imageSurprise" src="salwa3.jpg" alt="Untuk Salwa">
-
-  <audio id="audioPlayer" src="nadin.mp3" muted></audio>
+ <audio id="audioPlayer" src="nadin.mp3"></audio>
+<button id="startBtn">Tap here to know how much I love you</button>
+<div id="imageSurprise" style="display:none;">
+  <!-- Masukkan gambar kamu di sini -->
+  <img src="salwa1.jpg" width="300" />
+</div>
+<div id="pesan" class="typing"></div>
 
 <script>
   const startBtn = document.getElementById('startBtn');
   const pesanDiv = document.getElementById('pesan');
   const audio = document.getElementById('audioPlayer');
   const image = document.getElementById('imageSurprise');
-  const startTime = 20; // mulai dari detik ke-20
-  const speed = 100; // ketik lambat
+  const speed = 100;
+  const sayangSpeed = 10;
+  const startTime = 20;
 
-  function ketik(teks, elemen, selesai) {
-    let i = 0;
-    elemen.style.display = 'block';
-    function tulis() {
-      if (i < teks.length) {
-        elemen.innerHTML += teks.charAt(i);
-        i++;
-        setTimeout(tulis, speed);
-      } else if (selesai) {
-        selesai();
-      }
-    }
-    tulis();
-  }
+  const teks = `Hi, Salwa !
+Senang kamu masih hidup di dunia ini
 
-  function mulaiAudio() {
-    // pastikan audio bisa dimulai dari detik tertentu setelah klik
-    audio.currentTime = startTime;
-    audio.play().catch((e) => {
-      console.warn("Audio gagal diputar:", e);
-    });
-  }
+Ga kerasa ya kita udah 7 bulan lebih
+Seneng rasanya bisa punya pasangan kamu
+
+Dari beribu warga antapani
+Dari banyaknya warga bengkulu
+Kamu lah yang hadir di hidupku
+Dan akan menetap di hatiku
+
+Selamanya...
+
+Aku sayang banget sama kamu
+Dan aku ingin kamu percaya
+Tapi kamunya gak percaya 😢
+Oke kalo kamu masih ga percaya kalo aku sayang kamu
+Aku bakal buktiin dengan cara bilang Aku sayang kamu 100 kali :
+
+[sayang-loop]
+
+Terimakasih telah menjadi bagian hidupku
+Terimakasih atas semuanya, aku bahagia dan bersyukur
+Semoga kita bertahan lama`;
 
   function mulaiSurat() {
-    pesanDiv.innerHTML = '';
+    startBtn.style.display = 'none';
     image.style.display = 'block';
 
-    let bagian = [
-      "Hi, Salwa !\nSenang kamu masih hidup di dunia ini\n",
-      "(pause)",
-      "Ga kerasa ya kita udah 7 bulan lebih\nSeneng rasanya bisa punya pasangan kamu\n\n",
-      "Dari beribu warga antapani\nDari banyaknya warga bengkulu\nKamu lah yang hadir di hidupku\nDan akan menetap di hatiku\n",
-      "(pause)",
-      "Selamanya...\n",
-      "(pause)",
-      "Aku sayang banget sama kamu\nDan aku ingin kamu percaya\nTapi kamunya gak percaya 😢\nOke kalo kamu masih ga percaya kalo aku sayang kamu\nAku bakal buktiin dengan cara bilang Aku sayang kamu 100 kali :\n\n"
-    ];
+    // Mainkan audio setelah metadata siap
+    audio.addEventListener('loadedmetadata', () => {
+      audio.currentTime = startTime;
+      audio.play().catch(err => {
+        console.error("Gagal play audio:", err);
+      });
+    });
 
-    let index = 0;
-
-    function ketikBagianBerikut() {
-      if (index < bagian.length) {
-        if (bagian[index] === "(pause)") {
-          setTimeout(() => {
-            index++;
-            ketikBagianBerikut();
-          }, 1000);
-        } else {
-          ketik(bagian[index], pesanDiv, () => {
-            index++;
-            ketikBagianBerikut();
-          });
-        }
-      } else {
-        let count = 0;
-        function ulangSayang() {
-          if (count < 100) {
-            pesanDiv.innerHTML += `Aku sayang kamu ❤️\n`;
-            count++;
-            setTimeout(ulangSayang, 40);
-          } else {
-            ketik("\nTerimakasih telah menjadi bagian hidupku\nTerimakasih atas semuanya, aku bahagia dan bersyukur\nSemoga kita bertahan lama\n", pesanDiv);
-          }
-        }
-        ulangSayang();
-      }
+    // Kalau metadata sudah ready
+    if (audio.readyState >= 1) {
+      audio.currentTime = startTime;
+      audio.play().catch(err => {
+        console.error("Gagal play audio:", err);
+      });
     }
 
-    mulaiAudio();
-    ketikBagianBerikut();
+    tampilkanPesan(teks);
   }
 
-  startBtn.addEventListener('click', () => {
-    startBtn.style.display = 'none';
-    mulaiSurat();
-  });
+  function tampilkanPesan(teks) {
+    let i = 0;
+    const loopText = "Aku sayang kamu ❤️\n";
+    const expandedText = teks.replace("[sayang-loop]", loopText.repeat(100));
+    function ketik() {
+      if (i < expandedText.length) {
+        pesanDiv.innerHTML += expandedText.charAt(i);
+        let currentSpeed = (expandedText.substr(i, 17) === "Aku sayang kamu ❤️") ? sayangSpeed : speed;
+        i++;
+        setTimeout(ketik, currentSpeed);
+      }
+    }
+    ketik();
+  }
+
+  startBtn.addEventListener('click', mulaiSurat);
 </script>
 
 </body>
