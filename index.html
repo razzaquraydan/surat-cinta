@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surat Cinta untuk Salwa</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #ffe6f0, #e6f7ff);
+      font-family: 'Courier New', monospace;
+      color: #333;
+      padding: 30px;
+      max-width: 700px;
+      margin: auto;
+    }
+    .typing {
+      white-space: pre-line;
+      border-right: 2px solid #f06292;
+      animation: blink 1s infinite step-end;
+      font-size: 1.1em;
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+  </style>
+</head>
+<body>
+  <h2>💌 Surat Cinta dari Array untuk Salwa 💌</h2>
+  <div id="pesan" class="typing"></div>
+
+  <script>
+    const teks = `Hai Salwa ❤️
+
+Selamat bulan Juni
+
+Meski aku sering nyakitin kamu
+Hatiku selalu sayang sama kamu 💖
+
+Maaf yaa belum bisa jadi pacar yang baik seperti yang kamu inginkan
+
+Tapi aku akan berusaha untuk itu semua
+
+hehee
+
+Jadi... tetaplah di sisiku ya, Salwa.
+Karena tanpa kamu, aku seperti nadin tanpa tanjung 😢
+
+Dari seseorang yang selalu sayang kamu,
+Array 💌`;
+
+    let i = 0;
+    const speed = 40;
+    function ketik() {
+      if (i < teks.length) {
+        document.getElementById("pesan").innerHTML += teks.charAt(i);
+        i++;
+        setTimeout(ketik, speed);
+      }
+    }
+    ketik();
+  </script>
+</body>
+</html>
