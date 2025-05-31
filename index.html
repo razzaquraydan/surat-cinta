@@ -48,24 +48,35 @@
     @keyframes blink {
       50% { border-color: transparent; }
     }
+    img#imageSurprise {
+      display: none;
+      margin-top: 20px;
+      max-width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
 <body>
 
-  <button id="startBtn">Tap here to know how I love you</button>
+  <button id="startBtn">Tap here to know how much I love you</button>
 
   <div class="center-message" id="pesan"></div>
 
-  <audio id="audioPlayer" src="nadin.mp3"></audio>
+  <img id="imageSurprise" src="salwa1.jpg" alt="Untuk Salwa">
+  <img id="imageSurprise" src="salwa2.jpg" alt="Untuk Salwa">
+  <img id="imageSurprise" src="salwa3.jpg" alt="Untuk Salwa">
+
+  <audio id="audioPlayer" src="nadin.mp3" muted></audio>
 
 <script>
   const startBtn = document.getElementById('startBtn');
   const pesanDiv = document.getElementById('pesan');
   const audio = document.getElementById('audioPlayer');
-  const startTime = 20;
-  const speed = 40;
+  const image = document.getElementById('imageSurprise');
+  const startTime = 20; // mulai dari detik ke-20
+  const speed = 60; // per karakter
 
-  // Fungsi untuk ketik teks
   function ketik(teks, elemen, selesai) {
     let i = 0;
     elemen.style.display = 'block';
@@ -82,51 +93,56 @@
   }
 
   function mulaiAudio() {
+    audio.muted = false;
     if (audio.duration > startTime) {
       audio.currentTime = startTime;
+    } else {
+      audio.currentTime = 0;
     }
-    audio.play();
+    audio.play().catch(e => {
+      console.log("Gagal memutar audio:", e);
+    });
   }
 
   function mulaiSurat() {
-    // Langkah-langkah surat
     pesanDiv.innerHTML = '';
+    image.style.display = 'block';
+
     let bagian = [
       "Hi, Salwa !\nSenang kamu masih hidup di dunia ini\n",
-      "(loading...)\n",
+      "(pause)",
       "Ga kerasa ya kita udah 7 bulan lebih\nSeneng rasanya bisa punya pasangan kamu\n\n",
       "Dari beribu warga antapani\nDari banyaknya warga bengkulu\nKamu lah yang hadir di hidupku\nDan akan menetap di hatiku\n",
-      "(loading...)\n",
+      "(pause)",
       "Selamanya...\n",
-      "(loading...)\n",
-      "Aku sayang banget sama kamu\nDan aku ingin kamu percaya\nTapi kamunya gak percaya 😢\nOke kalo kamu masih ga percaya kalo aku sayang kamu\nAku bakal buktiin dengan cara bilang Aku sayang kamu 100 kali :\n\n",
+      "(pause)",
+      "Aku sayang banget sama kamu\nDan aku ingin kamu percaya\nTapi kamunya gak percaya 😢\nOke kalo kamu masih ga percaya kalo aku sayang kamu\nAku bakal buktiin dengan cara bilang Aku sayang kamu 100 kali :\n\n"
     ];
 
     let index = 0;
 
     function ketikBagianBerikut() {
       if (index < bagian.length) {
-        ketik(bagian[index], pesanDiv, () => {
-          if (bagian[index].includes('(loading...)')) {
-            setTimeout(() => {
-              index++;
-              ketikBagianBerikut();
-            }, 1000);
-          } else {
+        if (bagian[index] === "(pause)") {
+          setTimeout(() => {
             index++;
             ketikBagianBerikut();
-          }
-        });
+          }, 1000); // delay 1 detik
+        } else {
+          ketik(bagian[index], pesanDiv, () => {
+            index++;
+            ketikBagianBerikut();
+          });
+        }
       } else {
-        // Tulis “Aku sayang kamu” 100x
+        // Loop "Aku sayang kamu" 100 kali
         let count = 0;
         function ulangSayang() {
           if (count < 100) {
             pesanDiv.innerHTML += `Aku sayang kamu ❤️\n`;
             count++;
-            setTimeout(ulangSayang, 30);
+            setTimeout(ulangSayang, 40);
           } else {
-            // Lanjut ke bagian akhir
             ketik("\nTerimakasih telah menjadi bagian hidupku\nTerimakasih atas semuanya, aku bahagia dan bersyukur\nSemoga kita bertahan lama\n", pesanDiv);
           }
         }
