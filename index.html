@@ -6,7 +6,8 @@
   <title>Untuk Salwa</title>
   <style>
     body {
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       font-family: 'Courier New', monospace;
       background-color: #fff6f9;
       color: #333;
@@ -32,15 +33,25 @@
     button#startBtn:hover {
       background-color: #d04178;
     }
-    .center-message {
+    div#imageSurprise {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+    #imageSurprise img {
+      max-width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+    }
+    #pesan {
+      white-space: pre-wrap;
       margin-top: 30px;
+      font-size: 1.1em;
       max-width: 600px;
       background-color: rgba(255, 255, 255, 0.9);
       padding: 25px;
       border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      font-size: 1.1em;
-      white-space: pre-line;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       border-right: 2px solid #f06292;
       animation: blink 1s infinite step-end;
       display: none;
@@ -48,46 +59,38 @@
     @keyframes blink {
       50% { border-color: transparent; }
     }
-    img#imageSurprise {
-      display: none;
-      margin-top: 20px;
-      max-width: 300px;
-      border-radius: 10px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.2);
-    }
   </style>
 </head>
 <body>
 
+  <!-- Audio -->
   <audio id="audioPlayer" src="nadin.mp3"></audio>
 
-<!-- Tombol -->
-<button id="startBtn">Tap here to know how much I love you</button>
+  <!-- Tombol -->
+  <button id="startBtn">Tap here to know how much I love you</button>
 
-<!-- Gambar muncul setelah tombol diklik -->
-<div id="imageSurprise" style="display:none; text-align:center; margin-top:20px;">
-  <img src="salwa1.jpg" width="300" />
-  
-  <!-- Textbox muncul setelah gambar -->
-  <div style="margin-top:15px;">
-    <label for="responseBox">Kamu mau bilang apa? 😊</label><br>
-    <textarea id="responseBox" rows="4" cols="40" placeholder="Tulis di sini ya..."></textarea>
+  <!-- Gambar + Textbox -->
+  <div id="imageSurprise">
+    <img src="salwa1.jpg" alt="Salwa Cantik" />
+    <div style="margin-top: 15px;">
+      <label for="responseBox">Kamu mau bilang apa? 😊</label><br>
+      <textarea id="responseBox" rows="4" cols="40" placeholder="Tulis di sini ya..."></textarea>
+    </div>
   </div>
-</div>
 
-<!-- Pesan cinta -->
-<div id="pesan" class="typing" style="white-space:pre-wrap; margin-top:30px;"></div>
+  <!-- Pesan Cinta -->
+  <div id="pesan"></div>
 
-<script>
-  const startBtn = document.getElementById('startBtn');
-  const pesanDiv = document.getElementById('pesan');
-  const audio = document.getElementById('audioPlayer');
-  const image = document.getElementById('imageSurprise');
-  const speed = 100;
-  const sayangSpeed = 10;
-  const startTime = 20;
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    const pesanDiv = document.getElementById('pesan');
+    const audio = document.getElementById('audioPlayer');
+    const imageDiv = document.getElementById('imageSurprise');
+    const speed = 130; // lebih lambat untuk ketikan biasa
+    const sayangSpeed = 10;
+    const startTime = 20;
 
-  const teks = `Hi, Salwa !
+    const teks = `Hi, Salwa !
 Senang kamu masih hidup di dunia ini
 
 Ga kerasa ya kita udah 7 bulan lebih
@@ -112,45 +115,43 @@ Terimakasih telah menjadi bagian hidupku
 Terimakasih atas semuanya, aku bahagia dan bersyukur
 Semoga kita bertahan lama`;
 
-  function mulaiSurat() {
-    startBtn.style.display = 'none';
-    image.style.display = 'block';
+    function mulaiSurat() {
+      startBtn.style.display = 'none';
+      imageDiv.style.display = 'block';
+      pesanDiv.style.display = 'block';
 
-    // Mainkan audio setelah metadata siap
-    audio.addEventListener('loadedmetadata', () => {
-      audio.currentTime = startTime;
-      audio.play().catch(err => {
-        console.error("Gagal play audio:", err);
+      // Audio
+      audio.addEventListener('loadedmetadata', () => {
+        audio.currentTime = startTime;
+        audio.play().catch(err => console.error("Gagal play audio:", err));
       });
-    });
 
-    if (audio.readyState >= 1) {
-      audio.currentTime = startTime;
-      audio.play().catch(err => {
-        console.error("Gagal play audio:", err);
-      });
-    }
-
-    tampilkanPesan(teks);
-  }
-
-  function tampilkanPesan(teks) {
-    let i = 0;
-    const loopText = "Aku sayang kamu ❤️\n";
-    const expandedText = teks.replace("[sayang-loop]", loopText.repeat(100));
-    function ketik() {
-      if (i < expandedText.length) {
-        pesanDiv.innerHTML += expandedText.charAt(i);
-        let currentSpeed = (expandedText.substr(i, 17) === "Aku sayang kamu ❤️") ? sayangSpeed : speed;
-        i++;
-        setTimeout(ketik, currentSpeed);
+      if (audio.readyState >= 1) {
+        audio.currentTime = startTime;
+        audio.play().catch(err => console.error("Gagal play audio:", err));
       }
-    }
-    ketik();
-  }
 
-  startBtn.addEventListener('click', mulaiSurat);
-</script>
+      tampilkanPesan(teks);
+    }
+
+    function tampilkanPesan(teks) {
+      let i = 0;
+      const loopText = "Aku sayang kamu ❤️\n";
+      const expandedText = teks.replace("[sayang-loop]", loopText.repeat(100));
+
+      function ketik() {
+        if (i < expandedText.length) {
+          pesanDiv.innerHTML += expandedText.charAt(i);
+          let currentSpeed = expandedText.substr(i, 17) === "Aku sayang kamu ❤️" ? sayangSpeed : speed;
+          i++;
+          setTimeout(ketik, currentSpeed);
+        }
+      }
+      ketik();
+    }
+
+    startBtn.addEventListener('click', mulaiSurat);
+  </script>
 
 </body>
 </html>
