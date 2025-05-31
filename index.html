@@ -59,13 +59,24 @@
 </head>
 <body>
 
- <audio id="audioPlayer" src="nadin.mp3"></audio>
+  <audio id="audioPlayer" src="nadin.mp3"></audio>
+
+<!-- Tombol -->
 <button id="startBtn">Tap here to know how much I love you</button>
-<div id="imageSurprise" style="display:none;">
-  <!-- Masukkan gambar kamu di sini -->
+
+<!-- Gambar muncul setelah tombol diklik -->
+<div id="imageSurprise" style="display:none; text-align:center; margin-top:20px;">
   <img src="salwa1.jpg" width="300" />
+  
+  <!-- Textbox muncul setelah gambar -->
+  <div style="margin-top:15px;">
+    <label for="responseBox">Kamu mau bilang apa? 😊</label><br>
+    <textarea id="responseBox" rows="4" cols="40" placeholder="Tulis di sini ya..."></textarea>
+  </div>
 </div>
-<div id="pesan" class="typing"></div>
+
+<!-- Pesan cinta -->
+<div id="pesan" class="typing" style="white-space:pre-wrap; margin-top:30px;"></div>
 
 <script>
   const startBtn = document.getElementById('startBtn');
@@ -113,7 +124,6 @@ Semoga kita bertahan lama`;
       });
     });
 
-    // Kalau metadata sudah ready
     if (audio.readyState >= 1) {
       audio.currentTime = startTime;
       audio.play().catch(err => {
