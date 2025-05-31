@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Untuk Salwa</title>
   <style>
     body {
@@ -19,6 +19,7 @@
       text-align: center;
       padding: 20px;
     }
+
     button#startBtn {
       padding: 15px 30px;
       font-size: 1.2em;
@@ -30,34 +31,36 @@
       box-shadow: 0 4px 8px rgba(240, 98, 146, 0.4);
       transition: background-color 0.3s ease;
     }
+
     button#startBtn:hover {
       background-color: #d04178;
     }
+
     div#imageSurprise {
       display: none;
       margin-top: 20px;
-      text-align: center;
     }
+
     #imageSurprise img {
       max-width: 300px;
       border-radius: 10px;
       box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
     }
+
     #pesan {
+      display: none;
       white-space: pre-wrap;
       margin-top: 30px;
       font-size: 1.1em;
       max-width: 600px;
-      background-color: rgba(255, 255, 255, 0.9);
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      border-right: 2px solid #f06292;
-      animation: blink 1s infinite step-end;
-      display: none;
-    }
-    @keyframes blink {
-      50% { border-color: transparent; }
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #fefefe;
+      border: 2px solid #f06292;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      line-height: 1.5;
     }
   </style>
 </head>
@@ -69,16 +72,12 @@
   <!-- Tombol -->
   <button id="startBtn">Tap here to know how much I love you</button>
 
-  <!-- Gambar + Textbox -->
+  <!-- Gambar -->
   <div id="imageSurprise">
     <img src="salwa1.jpg" alt="Salwa Cantik" />
-    <div style="margin-top: 15px;">
-      <label for="responseBox">Kamu mau bilang apa? 😊</label><br>
-      <textarea id="responseBox" rows="4" cols="40" placeholder="Tulis di sini ya..."></textarea>
-    </div>
   </div>
 
-  <!-- Pesan Cinta -->
+  <!-- Pesan -->
   <div id="pesan"></div>
 
   <script>
@@ -86,7 +85,7 @@
     const pesanDiv = document.getElementById('pesan');
     const audio = document.getElementById('audioPlayer');
     const imageDiv = document.getElementById('imageSurprise');
-    const speed = 130; // lebih lambat untuk ketikan biasa
+    const speed = 130;
     const sayangSpeed = 10;
     const startTime = 20;
 
