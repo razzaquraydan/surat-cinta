@@ -75,7 +75,7 @@
   const audio = document.getElementById('audioPlayer');
   const image = document.getElementById('imageSurprise');
   const startTime = 20; // mulai dari detik ke-20
-  const speed = 60; // per karakter
+  const speed = 100; // ketik lambat
 
   function ketik(teks, elemen, selesai) {
     let i = 0;
@@ -93,14 +93,10 @@
   }
 
   function mulaiAudio() {
-    audio.muted = false;
-    if (audio.duration > startTime) {
-      audio.currentTime = startTime;
-    } else {
-      audio.currentTime = 0;
-    }
-    audio.play().catch(e => {
-      console.log("Gagal memutar audio:", e);
+    // pastikan audio bisa dimulai dari detik tertentu setelah klik
+    audio.currentTime = startTime;
+    audio.play().catch((e) => {
+      console.warn("Audio gagal diputar:", e);
     });
   }
 
@@ -127,7 +123,7 @@
           setTimeout(() => {
             index++;
             ketikBagianBerikut();
-          }, 1000); // delay 1 detik
+          }, 1000);
         } else {
           ketik(bagian[index], pesanDiv, () => {
             index++;
@@ -135,7 +131,6 @@
           });
         }
       } else {
-        // Loop "Aku sayang kamu" 100 kali
         let count = 0;
         function ulangSayang() {
           if (count < 100) {
