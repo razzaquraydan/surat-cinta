@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Surat Cinta untuk Salwa</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Untuk Salwa</title>
   <style>
     body {
       margin: 0; padding: 0;
       font-family: 'Courier New', monospace;
-      background-color: #fdf6f9;
+      background-color: #fff6f9;
       color: #333;
       display: flex;
       justify-content: center;
@@ -43,7 +43,7 @@
       white-space: pre-line;
       border-right: 2px solid #f06292;
       animation: blink 1s infinite step-end;
-      display: none; /* awalnya disembunyikan */
+      display: none;
     }
     @keyframes blink {
       50% { border-color: transparent; }
@@ -59,42 +59,23 @@
   <audio id="audioPlayer" src="nadin.mp3"></audio>
 
 <script>
-  const teks = `Hai Salwa ❤️
-
-Selamat bulan Juni
-
-Meski aku sering nyakitin kamu
-Hatiku selalu sayang sama kamu 💖
-
-Maaf yaa belum bisa jadi pacar yang baik seperti yang kamu inginkan
-
-Tapi aku akan berusaha untuk itu semua
-
-hehee
-
-Jadi... tetaplah di sisiku ya, Salwa.
-Karena tanpa kamu, aku seperti nadin tanpa tanjung 😢
-
-Dari seseorang yang selalu sayang kamu,
-Array 💌`;
-
   const startBtn = document.getElementById('startBtn');
   const pesanDiv = document.getElementById('pesan');
   const audio = document.getElementById('audioPlayer');
-  const startTime = 20; // mulai putar dari detik ke-20
-  const speed = 40; // kecepatan ketik dalam ms per karakter
+  const startTime = 20;
+  const speed = 40;
 
-  function ketik(teks, element, callback) {
+  // Fungsi untuk ketik teks
+  function ketik(teks, elemen, selesai) {
     let i = 0;
-    element.style.display = 'block';
-    element.innerHTML = '';
+    elemen.style.display = 'block';
     function tulis() {
       if (i < teks.length) {
-        element.innerHTML += teks.charAt(i);
+        elemen.innerHTML += teks.charAt(i);
         i++;
         setTimeout(tulis, speed);
-      } else if (callback) {
-        callback();
+      } else if (selesai) {
+        selesai();
       }
     }
     tulis();
@@ -103,17 +84,64 @@ Array 💌`;
   function mulaiAudio() {
     if (audio.duration > startTime) {
       audio.currentTime = startTime;
-      audio.play();
-    } else {
-      audio.play(); // kalau durasi kurang dari 20 detik, mulai dari awal saja
     }
+    audio.play();
+  }
+
+  function mulaiSurat() {
+    // Langkah-langkah surat
+    pesanDiv.innerHTML = '';
+    let bagian = [
+      "Hi, Salwa !\nSenang kamu masih hidup di dunia ini\n",
+      "(loading...)\n",
+      "Ga kerasa ya kita udah 7 bulan lebih\nSeneng rasanya bisa punya pasangan kamu\n\n",
+      "Dari beribu warga antapani\nDari banyaknya warga bengkulu\nKamu lah yang hadir di hidupku\nDan akan menetap di hatiku\n",
+      "(loading...)\n",
+      "Selamanya...\n",
+      "(loading...)\n",
+      "Aku sayang banget sama kamu\nDan aku ingin kamu percaya\nTapi kamunya gak percaya 😢\nOke kalo kamu masih ga percaya kalo aku sayang kamu\nAku bakal buktiin dengan cara bilang Aku sayang kamu 100 kali :\n\n",
+    ];
+
+    let index = 0;
+
+    function ketikBagianBerikut() {
+      if (index < bagian.length) {
+        ketik(bagian[index], pesanDiv, () => {
+          if (bagian[index].includes('(loading...)')) {
+            setTimeout(() => {
+              index++;
+              ketikBagianBerikut();
+            }, 1000);
+          } else {
+            index++;
+            ketikBagianBerikut();
+          }
+        });
+      } else {
+        // Tulis “Aku sayang kamu” 100x
+        let count = 0;
+        function ulangSayang() {
+          if (count < 100) {
+            pesanDiv.innerHTML += `Aku sayang kamu ❤️\n`;
+            count++;
+            setTimeout(ulangSayang, 30);
+          } else {
+            // Lanjut ke bagian akhir
+            ketik("\nTerimakasih telah menjadi bagian hidupku\nTerimakasih atas semuanya, aku bahagia dan bersyukur\nSemoga kita bertahan lama\n", pesanDiv);
+          }
+        }
+        ulangSayang();
+      }
+    }
+
+    mulaiAudio();
+    ketikBagianBerikut();
   }
 
   startBtn.addEventListener('click', () => {
-    startBtn.style.display = 'none'; // sembunyikan tombol setelah diklik
-    ketik(teks, pesanDiv, mulaiAudio);
+    startBtn.style.display = 'none';
+    mulaiSurat();
   });
-
 </script>
 
 </body>
