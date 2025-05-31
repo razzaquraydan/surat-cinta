@@ -135,18 +135,37 @@ Array 💌`;
   }
   ketik();
 
-  // Tambahkan event listener klik untuk mulai audio
+</script>
+
+<audio id="audioPlayer" src="nadin.mp3"></audio>
+
+<script>
+  const audio = document.getElementById('audioPlayer');
+  const startTime = 20; // mulai dari detik ke-20
+
+  // Pastikan metadata lagu sudah dimuat supaya durasi diketahui
+  audio.addEventListener('loadedmetadata', () => {
+    if (audio.duration > startTime) {
+      audio.currentTime = startTime; // set posisi mulai putar di detik 20
+      audio.play();
+    } else {
+      console.log('Lagu lebih pendek dari waktu mulai yang diinginkan.');
+    }
+  });
+
+  // Jika metadata sudah siap sebelum klik, langsung set currentTime dan play
   document.body.addEventListener('click', function startAudio() {
-    const audio = document.querySelector('audio');
-    audio.play();
-    // hapus event listener supaya hanya jalan sekali
+    if (audio.readyState >= 1) { // HAVE_METADATA atau lebih
+      if (audio.duration > startTime) {
+        audio.currentTime = startTime;
+        audio.play();
+      }
+    }
     document.body.removeEventListener('click', startAudio);
   });
 </script>
 
-  <audio autoplay loop>
-  <source src="nadin.mp3" type="audio/mpeg">
-  </audio>
+  
 
 </body>
 </html>
