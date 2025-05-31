@@ -2,12 +2,11 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Surat Cinta untuk Salwa</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       font-family: 'Courier New', monospace;
       background-color: #fdf6f9;
       color: #333;
@@ -15,96 +14,51 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-    }
-
-    .wrapper {
-      display: flex;
-      gap: 20px;
-      padding: 30px;
-      flex-wrap: wrap;
-      max-width: 1200px;
-    }
-
-    .left-images,
-    .right-images {
-      display: flex;
       flex-direction: column;
-      gap: 20px;
-      flex: 1;
+      text-align: center;
+      padding: 20px;
     }
-
-    .right-images {
-      justify-content: center;
+    button#startBtn {
+      padding: 15px 30px;
+      font-size: 1.2em;
+      background-color: #f06292;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(240, 98, 146, 0.4);
+      transition: background-color 0.3s ease;
     }
-
-    .left-images img,
-    .right-images img {
-      width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      object-fit: cover;
+    button#startBtn:hover {
+      background-color: #d04178;
     }
-
     .center-message {
+      margin-top: 30px;
+      max-width: 600px;
       background-color: rgba(255, 255, 255, 0.9);
       padding: 25px;
       border-radius: 15px;
-      flex: 2;
-      min-width: 300px;
-      max-width: 600px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .typing {
+      font-size: 1.1em;
       white-space: pre-line;
       border-right: 2px solid #f06292;
       animation: blink 1s infinite step-end;
-      font-size: 1.05em;
+      display: none; /* awalnya disembunyikan */
     }
-
     @keyframes blink {
       50% { border-color: transparent; }
-    }
-
-    @media (max-width: 768px) {
-      .wrapper {
-        flex-direction: column;
-        align-items: center;
-      }
-      .left-images, .right-images {
-        flex-direction: row;
-        justify-content: center;
-      }
-      .left-images img, .right-images img {
-        width: 45%;
-      }
     }
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <div class="left-images">
-      <img src="salwa1.jpg" alt="Foto 1">
-      <img src="salwa2.jpg" alt="Foto 2">
-    </div>
 
-    <div class="center-message">
-      <h2>💌 Surat Cinta dari Array untuk Salwa 💌</h2>
-      <div id="pesan" class="typing"></div>
-    </div>
+  <button id="startBtn">Tap here to know how I love you</button>
 
-    <div class="right-images">
-      <img src="salwa3.jpg" alt="Foto 3">
+  <div class="center-message" id="pesan"></div>
 
-    </div>
-  </div>
+  <audio id="audioPlayer" src="nadin.mp3"></audio>
 
-  <script>
+<script>
   const teks = `Hai Salwa ❤️
 
 Selamat bulan Juni
@@ -124,48 +78,43 @@ Karena tanpa kamu, aku seperti nadin tanpa tanjung 😢
 Dari seseorang yang selalu sayang kamu,
 Array 💌`;
 
-  let i = 0;
-  const speed = 40;
-  function ketik() {
-    if (i < teks.length) {
-      document.getElementById("pesan").innerHTML += teks.charAt(i);
-      i++;
-      setTimeout(ketik, speed);
-    }
-  }
-  ketik();
-
-</script>
-
-<audio id="audioPlayer" src="nadin.mp3"></audio>
-
-<script>
+  const startBtn = document.getElementById('startBtn');
+  const pesanDiv = document.getElementById('pesan');
   const audio = document.getElementById('audioPlayer');
-  const startTime = 20; // mulai dari detik ke-20
+  const startTime = 20; // mulai putar dari detik ke-20
+  const speed = 40; // kecepatan ketik dalam ms per karakter
 
-  // Pastikan metadata lagu sudah dimuat supaya durasi diketahui
-  audio.addEventListener('loadedmetadata', () => {
-    if (audio.duration > startTime) {
-      audio.currentTime = startTime; // set posisi mulai putar di detik 20
-      audio.play();
-    } else {
-      console.log('Lagu lebih pendek dari waktu mulai yang diinginkan.');
-    }
-  });
-
-  // Jika metadata sudah siap sebelum klik, langsung set currentTime dan play
-  document.body.addEventListener('click', function startAudio() {
-    if (audio.readyState >= 1) { // HAVE_METADATA atau lebih
-      if (audio.duration > startTime) {
-        audio.currentTime = startTime;
-        audio.play();
+  function ketik(teks, element, callback) {
+    let i = 0;
+    element.style.display = 'block';
+    element.innerHTML = '';
+    function tulis() {
+      if (i < teks.length) {
+        element.innerHTML += teks.charAt(i);
+        i++;
+        setTimeout(tulis, speed);
+      } else if (callback) {
+        callback();
       }
     }
-    document.body.removeEventListener('click', startAudio);
-  });
-</script>
+    tulis();
+  }
 
-  
+  function mulaiAudio() {
+    if (audio.duration > startTime) {
+      audio.currentTime = startTime;
+      audio.play();
+    } else {
+      audio.play(); // kalau durasi kurang dari 20 detik, mulai dari awal saja
+    }
+  }
+
+  startBtn.addEventListener('click', () => {
+    startBtn.style.display = 'none'; // sembunyikan tombol setelah diklik
+    ketik(teks, pesanDiv, mulaiAudio);
+  });
+
+</script>
 
 </body>
 </html>
