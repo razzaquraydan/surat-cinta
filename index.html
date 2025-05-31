@@ -105,7 +105,7 @@
   </div>
 
   <script>
-    const teks = `Hai Salwa ❤️
+  const teks = `Hai Salwa ❤️
 
 Selamat bulan Juni
 
@@ -124,17 +124,26 @@ Karena tanpa kamu, aku seperti nadin tanpa tanjung 😢
 Dari seseorang yang selalu sayang kamu,
 Array 💌`;
 
-    let i = 0;
-    const speed = 40;
-    function ketik() {
-      if (i < teks.length) {
-        document.getElementById("pesan").innerHTML += teks.charAt(i);
-        i++;
-        setTimeout(ketik, speed);
-      }
+  let i = 0;
+  const speed = 40;
+  function ketik() {
+    if (i < teks.length) {
+      document.getElementById("pesan").innerHTML += teks.charAt(i);
+      i++;
+      setTimeout(ketik, speed);
     }
-    ketik();
-  </script>
+  }
+  ketik();
+
+  // Tambahkan event listener klik untuk mulai audio
+  document.body.addEventListener('click', function startAudio() {
+    const audio = document.querySelector('audio');
+    audio.play();
+    // hapus event listener supaya hanya jalan sekali
+    document.body.removeEventListener('click', startAudio);
+  });
+</script>
+
   <audio autoplay loop>
   <source src="nadin.mp3" type="audio/mpeg">
   </audio>
